@@ -29,7 +29,8 @@ jobs:
       - name: The declared version moves with the code
         run: |
           if git rev-parse -q --verify HEAD~1 >/dev/null; then
-            if git diff --quiet HEAD~1 HEAD -- src build.sh manifest.template.json; then
+            # Content only: a file whose mode alone changed (made executable) runs the same code.
+            if [ -z "$(git diff --raw --no-abbrev HEAD~1 HEAD -- src build.sh manifest.template.json | awk '$3 != $4')" ]; then
               echo "no plugin source changed"
             else
               old="$(git show HEAD~1:manifest.template.json 2>/dev/null | python3 -c 'import json,sys; print(json.load(sys.stdin)["version"])' || true)"
