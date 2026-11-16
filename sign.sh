@@ -12,6 +12,11 @@ for part in manifest.json plugin.py; do
   test -e "build/$part" || { echo "missing build/$part: run build.sh first" >&2; exit 1; }
 done
 PLUGIN_ID="$(python3 -c "import json; print(json.load(open('build/manifest.json'))['id'])")"
+# The template's placeholder origin is no one's, and no key issued for your origin can sign it: stop before signing.
+# (build.sh still builds it, so the template's own CI can test the code.)
+case "$PLUGIN_ID" in
+  yourorigin.*) echo "manifest.template.json still has the placeholder origin 'yourorigin': set your own origin and id first" >&2; exit 1 ;;
+esac
 
 python3 -c 'import cryptography' 2>/dev/null || python3 -m pip install --quiet --user --break-system-packages 'cryptography>=42'
 python3 tools/sign_jws.py droidtop-plugin+jws build/manifest.json "$PLUGIN_SIGNING_KEY_FILE" "$PLUGIN_SIGNING_CERT_FILE" > build/manifest.jws
