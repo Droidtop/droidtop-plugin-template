@@ -1,0 +1,10 @@
+build/
+*.droidplugin.tar.xz
+*.manifest.json
+__pycache__/
+
+# Private keys never belong in a repository: keep your root offline and this repository's key in its secrets.
+*.key
+*.key.new
+*.pem
+keys/

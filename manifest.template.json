@@ -1,0 +1,21 @@
+{
+  "id": "yourorigin.hello",
+  "origin": "yourorigin",
+  "label": "Hello",
+  "description": "An example plugin: a settings page with a switch and a greeting.",
+  "version": "0.1.0",
+  "kind": "python",
+  "contractVersion": 3,
+  "category": "other",
+  "requestsRoot": false,
+  "abis": [],
+  "provides": [
+    {
+      "point": "ui.facets",
+      "version": 1,
+      "id": "main",
+      "targets": ["settings.page"]
+    }
+  ],
+  "permissions": []
+}
