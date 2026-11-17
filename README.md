@@ -110,6 +110,7 @@ secret `CATALOG_DISPATCH_TOKEN`; the workflow's last step explains them.
 | `build.sh`, `sign.sh` | Build the bundle's contents; sign and pack it. |
 | `test_plugin.py` | The tests, run by CI before and after the build. |
 | `tools/` | `make_keys.sh`, and the signing and verifying scripts droidtop's own tooling uses. |
+| `tools/kotlin/` | The Kotlin plugin SDK, for a `native_bundle` plugin (below). |
 | `CHANGELOG.md` | What each version changed. |
 
 **Branches, for a larger plugin.** droidtop's own plugins keep the plugin's own code apart from what makes it a plugin:
@@ -117,6 +118,12 @@ a `creation` branch holds the core code and its tests, a `plugin-core` branch (t
 manifest, build, signing and changelog) and pins a `creation` commit, and a `plugin/stable` branch is the two combined,
 which releases build from. A plugin built around another project's app keeps that project on an `upstream-sync`
 branch instead of `creation`. A small plugin like this one needs none of that: one branch is fine.
+
+**Kotlin plugins and the SDK.** A `native_bundle` plugin written in Kotlin talks to droidtop through the same broker
+calls every time: one call and its error, a small HTTP request, a download as a droidtop job, its data files and a file
+the person picks. `tools/kotlin/dev/droidtop/plugin/sdk/Host.kt` does all of that. Copy it unchanged to
+`src/dev/droidtop/plugin/sdk/Host.kt`, subclass `Host` for your plugin's own calls, and add the copy to your Template
+drift workflow, so a fix here reaches you as a new tag of this repository.
 
 ## Licence
 
